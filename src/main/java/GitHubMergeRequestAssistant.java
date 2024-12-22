@@ -7,6 +7,7 @@ import cli.CommandContext;
 import dataModels.FileDetails;
 import dataModels.MergeRequestParameters;
 import helpers.ConfigHelper;
+import helpers.InputHelper;
 
 import java.util.Collections;
 
@@ -70,6 +71,6 @@ public class GitHubMergeRequestAssistant {
                 PULL_REQUEST_BODY // Pull request body
         );
 
-        return new CreateMergeRequestHandler(parameters);
+        return new CreateMergeRequestHandler(parameters, InputHelper::matchRepositoryIndexToName);
     }
 }

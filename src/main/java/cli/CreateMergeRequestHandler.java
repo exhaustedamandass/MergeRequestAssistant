@@ -4,15 +4,18 @@ import apiClients.ApiClient;
 import dataModels.FileDetails;
 import dataModels.MergeRequestParameters;
 import helpers.InputHelper;
+import interfaces.RepositorySelector;
 
 import java.io.IOException;
 import java.util.Map;
 
 public class CreateMergeRequestHandler extends CommandHandler {
     private final MergeRequestParameters parameters;
+    private final RepositorySelector repositorySelector;
 
-    public CreateMergeRequestHandler(MergeRequestParameters parameters) {
+    public CreateMergeRequestHandler(MergeRequestParameters parameters, RepositorySelector repositorySelector) {
         this.parameters = parameters;
+        this.repositorySelector = repositorySelector;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class CreateMergeRequestHandler extends CommandHandler {
             return false;
         }
 
-        String repo = InputHelper.matchRepositoryIndexToName(repoMap);
+        String repo = repositorySelector.matchRepositoryIndexToName(repoMap);
         if (repo == null) {
             return false;
         }
