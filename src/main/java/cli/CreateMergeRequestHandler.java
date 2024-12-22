@@ -3,7 +3,6 @@ package cli;
 import apiClients.ApiClient;
 import dataModels.FileDetails;
 import dataModels.MergeRequestParameters;
-import helpers.FileHelper;
 import helpers.InputHelper;
 
 import java.io.IOException;

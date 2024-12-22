@@ -59,44 +59,34 @@ public abstract class ApiClient {
      * Sends a POST request to the specified URL.
      * @param url The endpoint URL.
      * @param body The JSON body as a String.
-     * @return Parsed JSON response.
+     * @return ApiResponse.
      * @throws IOException If the request fails.
      */
-    protected JsonElement post(String url, String body) throws IOException {
+    protected ApiResponse post(String url, String body) throws IOException {
         Request request = new Request.Builder()
                 .url(getBaseUrl() + url)
                 .header("Authorization", getAuthorizationHeader())
                 .post(RequestBody.create(body, MediaType.parse("application/json")))
                 .build();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("HTTP POST failed: " + response.message());
-            }
-            return JsonParser.parseString(response.body().string());
-        }
+        return executeRequest(request);
     }
 
     /**
      * Sends a PUT request to the specified URL.
      * @param url The endpoint URL.
      * @param body The JSON body as a String.
-     * @return Parsed JSON response.
+     * @return ApiResponse.
      * @throws IOException If the request fails.
      */
-    protected JsonElement put(String url, String body) throws IOException {
+    protected ApiResponse put(String url, String body) throws IOException {
         Request request = new Request.Builder()
                 .url(getBaseUrl() + url)
                 .header("Authorization", getAuthorizationHeader())
                 .put(RequestBody.create(body, MediaType.parse("application/json")))
                 .build();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("HTTP PUT failed: " + response.message());
-            }
-            return JsonParser.parseString(response.body().string());
-        }
+        return executeRequest(request);
     }
 
     /**
@@ -152,4 +142,17 @@ public abstract class ApiClient {
      * @throws IOException If the request fails or returns an error response.
      */
     public abstract boolean branchExists(String repo, String branchName) throws IOException;
+
+    private ApiResponse executeRequest(Request request) throws IOException {
+        try (Response response = client.newCall(request).execute()) {
+            int statusCode = response.code();
+            JsonElement jsonElement = null;
+
+            if (response.body() != null) {
+                jsonElement = JsonParser.parseString(response.body().string());
+            }
+
+            return new ApiResponse(jsonElement, statusCode); // Return ApiResponse
+        }
+    }
 }

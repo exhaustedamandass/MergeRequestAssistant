@@ -39,7 +39,10 @@ public class GitHubApiClient extends ApiClient {
         body.addProperty("ref", "refs/heads/" + branchName);
         body.addProperty("sha", mainBranchSha);
 
-        post(url, body.toString());
+        ApiResponse response = post(url, body.toString());
+        if(!response.isSuccessful()){
+            throw new IOException("Failed to create a branch. HTTP status: " + response.getStatusCode());
+        }
         return true;
     }
 
@@ -59,7 +62,11 @@ public class GitHubApiClient extends ApiClient {
             body.addProperty("sha", sha); // Add the SHA to update the file
         }
 
-        put(url, body.toString());
+        ApiResponse response = put(url, body.toString());
+        if(!response.isSuccessful()){
+            throw new IOException("Failed to commit a file. HTTP status: " + response.getStatusCode());
+        }
+
         return true;
     }
 
@@ -73,7 +80,11 @@ public class GitHubApiClient extends ApiClient {
         requestBody.addProperty("head", branchName);
         requestBody.addProperty("base", "main");
 
-        post(url, requestBody.toString());
+        ApiResponse response = post(url, requestBody.toString());
+        if(!response.isSuccessful()){
+            throw new IOException("Failed to create a pull request. HTTP status: " + response.getStatusCode());
+        }
+
         return true;
     }
 

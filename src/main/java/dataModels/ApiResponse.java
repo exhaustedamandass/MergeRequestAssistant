@@ -18,5 +18,9 @@ public class ApiResponse {
     public int getStatusCode() {
         return statusCode;
     }
+
+    public boolean isSuccessful() {
+        return statusCode >= 200 && statusCode < 300;
+    }
 }
 
