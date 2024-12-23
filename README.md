@@ -8,6 +8,7 @@ JetBrains test task
 
 ## Project structure
 
+```
 .idea/
 | runConfigurations/
 |---- Run.xml <-- main configuration
@@ -44,17 +45,17 @@ src/
 .gitignore
 config.properties
 pom.xml
-
+```
 
 ## Functionality
 
 After running the application, all repositories will be listed in the CLI
 
-![listRepositories]()
+![listRepositories](https://github.com/exhaustedamandass/MergeRequestAssistant/blob/main/resources/chooseRepository.png)
 
 Output of the program looks like this
 
-![output]()
+![output](https://github.com/exhaustedamandass/MergeRequestAssistant/blob/main/resources/output.png)
 
 ## Usage
 
